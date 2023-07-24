@@ -2,7 +2,7 @@ import os,requests
 import eyed3
 import numpy as np
 
-class AudioFile:
+class MP3MetadataMaker:
     def __init__(self,path) -> None:
         self.files = None
         self.path = None
@@ -22,10 +22,16 @@ class AudioFile:
             self.audiofile = eyed3.load(self.path)
         pass
 
+    def set_api_key(self,api_key : str):
+        self.api_key = api_key
+        pass
+        
     def process(self):
+        if not self.api_key:
+            raise KeyError("You need to specify an api key using set_api_key() !")
         url = "https://deezerdevs-deezer.p.rapidapi.com/search"
         headers = {
-            "X-RapidAPI-Key": "6267713524msh3531ca742782374p1f47e4jsn09499b89e398",
+            "X-RapidAPI-Key": self.api_key,
             "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com"
         }
         song_id = None
